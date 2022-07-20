@@ -1,0 +1,59 @@
+.title {
+    margin-top: 10%;
+    margin-left: 20px;
+    font-weight: 300;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* overflow-x: scroll; */
+
+    gap: 70px;
+    scroll-snap-type: mandatory;
+    padding: 10px 0;
+    margin: 20px 20px;
+}
+
+.books {
+    display: flex;
+    padding: 10px 40px;
+    flex-direction: column;
+    cursor: pointer;
+    width: 9em;
+    transition: all 0.3s ease-in-out;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+        rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+.books a {
+    color: black;
+    text-decoration: none;
+}
+.books:hover {
+    transform: scale(1.1);
+    overflow: visible;
+}
+.books img {
+    margin: 10px 10px;
+}
+.books p {
+    margin-top: 10px;
+    font-size: 13px;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+.pagination div {
+    gap: 0;
+}
+
+@media screen and (max-width: 500px) {
+    .card-container {
+    }
+    .books {
+        margin: 0 auto;
+        width: 13em;
+    }
+}
