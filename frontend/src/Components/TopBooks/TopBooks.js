@@ -20,8 +20,15 @@ const getTopBooks = async ({ queryKey }) => {
 }
 const TopBooks = () => {
     const [activePage, setPage] = useState(1)
+
     const { isSuccess, isLoading, data } = useQuery(
-        ['allbooks', { page: activePage, count: 10 }],
+        [
+            'allbooks',
+            {
+                page: activePage,
+                count: 10,
+            },
+        ],
         getTopBooks
     )
 
@@ -45,14 +52,13 @@ const TopBooks = () => {
     }
 
     if (isSuccess) {
-        console.log(data)
         return (
             <div>
                 <h3 className={styles.title}>Top Books</h3>
                 <div className={styles['card-container']}>
                     {data.map((item) => (
-                        <div key={item.id} className={styles['books']}>
-                            <Link to={`books/${item._id}`}>
+                        <Link to={`books/${item._id}`}>
+                            <div key={item.id} className={styles['books']}>
                                 <img src={item.thumbnail} alt="books" />
                                 <p>
                                     <h4>Title : </h4>
@@ -62,8 +68,8 @@ const TopBooks = () => {
                                     <h4>Author : </h4>
                                     {item.author}
                                 </p>
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     ))}
                 </div>
                 <div className={styles.pagination}>

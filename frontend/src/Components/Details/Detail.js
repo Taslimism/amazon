@@ -1,6 +1,7 @@
 import styles from './Detail.module.css'
+import Review from '../Review/Review'
 import { useQuery } from '@tanstack/react-query'
-import NavBar from './../NavBar'
+import NavBar from '../NavBar'
 import axios from 'axios'
 import { Skeleton, Button } from '@mantine/core'
 
@@ -45,7 +46,7 @@ const Detail = () => {
             </>
         )
     }
-    console.log(data)
+
     if (isSuccess) {
         return (
             <>
@@ -66,10 +67,12 @@ const Detail = () => {
                         </div>
                     </div>
                 </div>
+
                 <div className={styles.cart}>
                     <div className={styles.review}>
                         <p>Write a review</p>
                         <textarea cols="100" rows="7"></textarea>
+                        <Button color="primary">Submit</Button>
                     </div>
                     <div className={styles.addtocart}>
                         <p>Cost - &#8377;{data.price}</p>
@@ -77,6 +80,7 @@ const Detail = () => {
                         <Button color="red">Add To Cart</Button>
                     </div>
                 </div>
+                <Review id={id} hostname={hostname} />
             </>
         )
     }

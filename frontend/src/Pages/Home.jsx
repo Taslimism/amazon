@@ -1,7 +1,7 @@
-import Hero from '../Components/Hero'
-import NavBar from '../Components/NavBar'
-import TopBooks from '../Components/TopBooks/TopBooks'
-import Footer from '../Components/Footer'
+import Hero from '../components/Hero'
+import NavBar from '../components/NavBar'
+import TopBooks from '../components/TopBooks/TopBooks'
+import Footer from '../components/Footer'
 const Home = () => {
     return (
         <>

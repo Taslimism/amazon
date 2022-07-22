@@ -50,8 +50,58 @@
     margin: 0 10px;
 }
 
+.carticon {
+    position: relative;
+}
+.carticon a {
+    color: black;
+}
+.cartcount {
+    position: absolute;
+    top: -12px;
+    right: -10px;
+    padding: 1px 5px;
+    border-radius: 50%;
+    color: white;
+    background-color: black;
+}
+
+.form-nav-container {
+    position: relative;
+}
+.form-navigation {
+    width: 570%;
+    position: absolute;
+    z-index: 2;
+    right: 3px;
+    padding: 10px 10px 20px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: space-between;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+        rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    background-color: white;
+    border-radius: 5px;
+}
+.form-navigation div {
+    margin: 10px 0;
+}
+.form-navigation a {
+    color: black;
+    text-decoration: none;
+}
+.break {
+    height: 2px;
+    width: 100%;
+    background-color: black;
+}
+
 @media (max-width: 767px) {
     .search {
         display: none;
+    }
+    .nav {
+        padding: 10px 25px;
     }
 }
