@@ -64,7 +64,10 @@ const NavBar = () => {
                             {!token && (
                                 <>
                                     <Link to="/form/signup">
-                                        <h4 style={{ cursor: 'pointer' }}>
+                                        <h4
+                                            className={styles.profilebtn}
+                                            style={{ cursor: 'pointer' }}
+                                        >
                                             Signup
                                         </h4>
                                     </Link>

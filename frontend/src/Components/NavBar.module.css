@@ -49,6 +49,8 @@
 }
 .profilebtn {
     margin-bottom: 10px;
+    padding: 0;
+    margin-left: 0;
 }
 
 .profile img {
