@@ -2,8 +2,27 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import styles from '../Form/Form.module.css'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import axios from 'axios'
 
+const hostname = window.location.hostname
+
+const registerurl =
+    hostname === 'localhost'
+        ? `http://localhost:5001/api/users/register/`
+        : `https://b-okstore.herokuapp.com/api/users/register/`
+
+const loginurl =
+    hostname === 'localhost'
+        ? `http://localhost:5001/api/users/login/`
+        : `https://b-okstore.herokuapp.com/api/users/login/`
 const Form = () => {
+    const schema = yup.object().shape({
+        name: yup.string(),
+        email: yup.string().email(),
+        password: yup.string().min(6).max(20),
+    })
     const pathname = window.location.pathname.split('/')[2]
     const navigate = useNavigate()
 
@@ -16,8 +35,28 @@ const Form = () => {
         }
     }, [pathname])
 
-    const { register, handleSubmit } = useForm()
-    const handleRegistration = (data) => console.log(data)
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    })
+    const handleRegistration = async (userData) => {
+        if (isSignup) {
+            const { data } = await axios.post(registerurl, userData)
+            if (data.status === 'success') {
+                localStorage.setItem('etoken', data.token)
+                navigate('/')
+            }
+        } else {
+            const { data } = await axios.post(loginurl, userData)
+            if (data.status === 'success') {
+                localStorage.setItem('etoken', data.token)
+                navigate('/')
+            }
+        }
+    }
 
     return (
         <>
@@ -34,7 +73,8 @@ const Form = () => {
                 )}
                 <div className={styles.row}>
                     <label>Email</label>
-                    <input type="email" name="email" {...register('email')} />
+                    <input type="text" name="email" {...register('email')} />
+                    <p className={styles.errors}>{errors.email?.message}</p>
                 </div>
                 <div className={styles.row}>
                     <label>Password</label>
@@ -43,6 +83,7 @@ const Form = () => {
                         name="password"
                         {...register('password')}
                     />
+                    <p className={styles.errors}>{errors.password?.message}</p>
                 </div>
                 <div className={styles.row}>
                     <button>Submit</button>

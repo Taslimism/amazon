@@ -6,6 +6,8 @@ import { UserIcon, ShoppingCartIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
 
 const NavBar = () => {
+    const token = localStorage.getItem('etoken')
+
     const [visibility, setVisibility] = useState(false)
     return (
         <nav className={styles.nav}>
@@ -50,7 +52,13 @@ const NavBar = () => {
                                 <div style={{ cursor: 'pointer' }}>Login</div>
                             </Link>
                             <hr className={styles.break} />
-                            <div style={{ cursor: 'pointer' }}>Profile</div>
+                            {token && (
+                                <Link to="/profile">
+                                    <div style={{ cursor: 'pointer' }}>
+                                        Profile
+                                    </div>
+                                </Link>
+                            )}
                         </div>
                     )}
                 </div>
