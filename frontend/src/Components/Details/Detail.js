@@ -1,9 +1,14 @@
+import Header from '../NavBar'
+import { useState, useRef, useEffect } from 'react'
+import shallow from 'zustand/shallow'
 import styles from './Detail.module.css'
 import Review from '../Review/Review'
 import { useQuery } from '@tanstack/react-query'
-import NavBar from '../NavBar'
+import useCartStore from '../../store/cart.store'
 import axios from 'axios'
 import { Skeleton, Button } from '@mantine/core'
+import swal from 'sweetalert'
+import { useNavigate } from 'react-router-dom'
 
 const getABook = async ({ queryKey }) => {
     const { hostname, id } = queryKey[1]
@@ -15,7 +20,22 @@ const getABook = async ({ queryKey }) => {
     const { data } = await axios.get(`${url}`)
     return data.data.product
 }
+
+const addToCartUrl = (hostname) => {
+    const url =
+        hostname === 'localhost'
+            ? `http://localhost:5001/api/cart/`
+            : `https://b-okstore.herokuapp.com/api/cart/`
+
+    return url
+}
 const Detail = () => {
+    const addToCart = useCartStore((state) => state.addToCart, shallow)
+    const navigate = useNavigate()
+    const token = localStorage.getItem('etoken')
+    const quantity = useRef()
+    const [count, setCount] = useState(1)
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
     const { hostname, pathname } = window.location
     const id = pathname.split('/')[2]
 
@@ -23,10 +43,41 @@ const Detail = () => {
         ['book', { hostname, id }],
         getABook
     )
+
+    useEffect(() => {
+        if (token) {
+            setIsLoggedIn(true)
+        } else {
+            setIsLoggedIn(false)
+        }
+    }, [token])
+
+    const handleAddToCart = () => {
+        if (!isLoggedIn) {
+            swal('Want to log in first?').then((value) => {
+                if (value) {
+                    navigate('/form/signup')
+                }
+            })
+
+            return
+        }
+
+        const url = addToCartUrl(hostname)
+        const userid = localStorage.getItem('euserid')
+        const quant = quantity.current.value
+        console.log(quantity.current.textContent)
+        const productid = data._id
+        addToCart(url, {
+            user_id: userid,
+            quantity: quant,
+            product_id: productid,
+        })
+    }
     if (isLoading) {
         return (
             <>
-                <NavBar />
+                <Header />
                 <div className={styles.detail}>
                     <div className={styles.hero}>
                         <div className={styles.img}>
@@ -50,7 +101,7 @@ const Detail = () => {
     if (isSuccess) {
         return (
             <>
-                <NavBar />
+                <Header />
                 <div className={styles.detail}>
                     <div className={styles.hero}>
                         <div className={styles.img}>
@@ -77,7 +128,33 @@ const Detail = () => {
                     <div className={styles.addtocart}>
                         <p>Cost - &#8377;{data.price}</p>
                         <p>This could be the best investment of your life</p>
-                        <Button color="red">Add To Cart</Button>
+                        <div className={styles.quantity}>
+                            <Button
+                                disabled={count === 1}
+                                onClick={() => setCount(count - 1)}
+                                variant="outline"
+                            >
+                                -
+                            </Button>
+                            <Button
+                                ref={quantity}
+                                variant="filled"
+                                color="dark"
+                                value={count}
+                            >
+                                {count}
+                            </Button>
+                            <Button
+                                disabled={count === 10}
+                                onClick={() => setCount(count + 1)}
+                                variant="outline"
+                            >
+                                +
+                            </Button>
+                        </div>
+                        <Button onClick={handleAddToCart} color="red">
+                            Add To Cart
+                        </Button>
                     </div>
                 </div>
                 <Review id={id} hostname={hostname} />

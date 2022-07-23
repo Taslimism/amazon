@@ -81,6 +81,10 @@
 .review p {
     margin-bottom: 10px;
 }
+.quantity {
+    text-align: center;
+    margin-bottom: 4px;
+}
 @media (max-width: 768px) {
     .product {
         flex-direction: column;
@@ -93,6 +97,7 @@
     }
     .cart {
         flex-direction: column;
+        gap: 10px;
     }
     .cart textarea {
         width: 90%;

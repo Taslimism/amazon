@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import styles from '../Form/Form.module.css'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import axios from 'axios'
-
+import swal from 'sweetalert'
 const hostname = window.location.hostname
 
 const registerurl =
@@ -17,6 +18,7 @@ const loginurl =
     hostname === 'localhost'
         ? `http://localhost:5001/api/users/login/`
         : `https://b-okstore.herokuapp.com/api/users/login/`
+
 const Form = () => {
     const schema = yup.object().shape({
         name: yup.string(),
@@ -44,16 +46,44 @@ const Form = () => {
     })
     const handleRegistration = async (userData) => {
         if (isSignup) {
-            const { data } = await axios.post(registerurl, userData)
-            if (data.status === 'success') {
-                localStorage.setItem('etoken', data.token)
-                navigate('/')
+            try {
+                const { data } = await axios.post(registerurl, userData)
+                if (data.status === 'success') {
+                    console.log(data)
+                    localStorage.setItem('etoken', data.token)
+                    localStorage.setItem('ename', userData.name)
+                    localStorage.setItem('euserid', data.data.user._id)
+                    swal(
+                        'Good job!',
+                        `Succesfully registered you ${userData.name}!`,
+                        'success'
+                    )
+                    navigate(-1)
+                }
+            } catch (e) {
+                const { message } = e.response.data
+
+                swal('Try Again!', message, 'error')
             }
         } else {
-            const { data } = await axios.post(loginurl, userData)
-            if (data.status === 'success') {
-                localStorage.setItem('etoken', data.token)
-                navigate('/')
+            try {
+                const { data } = await axios.post(loginurl, userData)
+
+                if (data.status === 'success') {
+                    localStorage.setItem('etoken', data.token)
+                    localStorage.setItem('ename', data.data.user.name)
+                    localStorage.setItem('euserid', data.data.user._id)
+                    swal(
+                        'Good job!',
+                        `Successfully logged you in ${data.data.user.name}!`,
+                        'success'
+                    )
+                    console.log(data)
+                    navigate(-1)
+                }
+            } catch (e) {
+                const { message } = e.response.data
+                swal('Try Again!', message, 'error')
             }
         }
     }

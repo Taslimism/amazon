@@ -1,14 +1,28 @@
 import { Link } from 'react-router-dom'
+import shallow from 'zustand/shallow'
 import styles from './NavBar.module.css'
 import Logo from './../assets/amazonlogo.png'
-
 import { UserIcon, ShoppingCartIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
+import swal from 'sweetalert'
+import useCartStore from '../store/cart.store'
 
 const NavBar = () => {
+    const { quantity, cart } = useCartStore((state) => ({
+        quantity: state.quantity,
+        cart: state.cart,
+    }))
+    console.log(cart[0])
     const token = localStorage.getItem('etoken')
-
     const [visibility, setVisibility] = useState(false)
+
+    const handleLogout = () => {
+        localStorage.removeItem('etoken')
+        localStorage.removeItem('name')
+        setVisibility(false)
+        swal('Logged out!', 'See you Again!', 'success')
+    }
+
     return (
         <nav className={styles.nav}>
             <div className={styles['img-container']}>
@@ -34,7 +48,9 @@ const NavBar = () => {
                             style={{ cursor: 'pointer' }}
                             height="25px"
                         />
-                        <div className={styles.cartcount}>0</div>
+                        <div className={styles.cartcount}>
+                            {quantity || cart[0]?.quantity}
+                        </div>
                     </Link>
                 </div>
                 <div className={styles['form-nav-container']}>
@@ -45,19 +61,37 @@ const NavBar = () => {
                     />
                     {visibility && (
                         <div className={styles['form-navigation']}>
-                            <Link to="/form/signup">
-                                <h4 style={{ cursor: 'pointer' }}>Signup</h4>
-                            </Link>
-                            <Link to="/form/login">
-                                <div style={{ cursor: 'pointer' }}>Login</div>
-                            </Link>
-                            <hr className={styles.break} />
+                            {!token && (
+                                <>
+                                    <Link to="/form/signup">
+                                        <h4 style={{ cursor: 'pointer' }}>
+                                            Signup
+                                        </h4>
+                                    </Link>
+                                    <Link to="/form/login">
+                                        <div style={{ cursor: 'pointer' }}>
+                                            Login
+                                        </div>
+                                    </Link>
+                                </>
+                            )}
                             {token && (
-                                <Link to="/profile">
-                                    <div style={{ cursor: 'pointer' }}>
-                                        Profile
+                                <div>
+                                    <Link to="/profile">
+                                        <h4
+                                            className={styles.profilebtn}
+                                            styles={{ cursor: 'pointer' }}
+                                        >
+                                            Profile
+                                        </h4>
+                                    </Link>
+                                    <div
+                                        onClick={handleLogout}
+                                        className={styles.logoutbtn}
+                                    >
+                                        Log out
                                     </div>
-                                </Link>
+                                </div>
                             )}
                         </div>
                     )}
