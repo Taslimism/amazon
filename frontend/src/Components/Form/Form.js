@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-
+import { Button } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import styles from '../Form/Form.module.css'
@@ -91,6 +91,14 @@ const Form = () => {
     return (
         <>
             <h5 className={styles.title}>{isSignup ? 'Register' : 'Login'}</h5>
+            {!isSignup && (
+                <Button
+                    className={styles.test}
+                    onClick={() => navigate('/form/signup')}
+                >
+                    Use Test credentials given below or create your own account
+                </Button>
+            )}
             <form
                 className={styles.loginform}
                 onSubmit={handleSubmit(handleRegistration)}
@@ -103,7 +111,12 @@ const Form = () => {
                 )}
                 <div className={styles.row}>
                     <label>Email</label>
-                    <input type="text" name="email" {...register('email')} />
+                    <input
+                        defaultValue={!isSignup ? 'email@email.com' : ''}
+                        type="text"
+                        name="email"
+                        {...register('email')}
+                    />
                     <p className={styles.errors}>{errors.email?.message}</p>
                 </div>
                 <div className={styles.row}>
@@ -111,6 +124,7 @@ const Form = () => {
                     <input
                         type="password"
                         name="password"
+                        defaultValue={!isSignup ? 'pass123' : ''}
                         {...register('password')}
                     />
                     <p className={styles.errors}>{errors.password?.message}</p>

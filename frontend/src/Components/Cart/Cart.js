@@ -30,6 +30,7 @@ const updateCartUrl = (hostname) => {
 
 const Cart = () => {
     const token = localStorage.getItem('etoken')
+    console.log(token)
     const { quantity, getCartItems, updateCart, deleteCart } = useCartStore(
         (state) => ({
             quantity: state.quantity,
@@ -62,6 +63,9 @@ const Cart = () => {
     }
     if (isLoading) {
         return null
+    }
+    if (!isError) {
+        ;<div>Please Log in to view items in your bag!</div>
     }
 
     if (isSuccess) {

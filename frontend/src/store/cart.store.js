@@ -12,15 +12,19 @@ const useCartStore = create((set) => ({
         return data
     },
     getCartItems: async (url) => {
-        const {
-            data: { data },
-        } = await axios.get(url, {
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('etoken')}`,
-            },
-        })
-        set({ cart: [...data.cart] })
-        return data.cart
+        try {
+            const {
+                data: { data },
+            } = await axios.get(url, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('etoken')}`,
+                },
+            })
+            set({ cart: [...data.cart] })
+            return data.cart
+        } catch (err) {
+            return new Error(err.message)
+        }
     },
     updateCart: async (url, body) => {
         const {

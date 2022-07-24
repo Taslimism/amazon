@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import styles from './PastOrders.module.css'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
