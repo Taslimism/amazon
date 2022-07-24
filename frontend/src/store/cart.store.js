@@ -27,18 +27,26 @@ const useCartStore = create((set) => ({
         }
     },
     updateCart: async (url, body) => {
-        const {
-            data: { data },
-        } = await axios.put(url, body)
-        // set({ cart: [...data.cart] })
-        set({ quantity: data.quantity })
-        return data
+        try {
+            const {
+                data: { data },
+            } = await axios.put(url, body)
+            // set({ cart: [...data.cart] })
+            set({ quantity: data.quantity })
+            return data
+        } catch (err) {
+            throw new Error(err)
+        }
     },
     deleteCart: async (url) => {
-        const { data } = await axios.delete(url)
-        set((state) => ({ quantity: state.quantity - 1 }))
-        console.log(data)
-        return data
+        try {
+            const { data } = await axios.delete(url)
+            set((state) => ({ quantity: state.quantity - 1 }))
+            console.log(data)
+            return data
+        } catch (err) {
+            throw new Error(err)
+        }
     },
     clearCart: () => {
         set({ quantity: 0 })
