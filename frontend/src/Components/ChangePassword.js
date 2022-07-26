@@ -31,7 +31,6 @@ const ChangePassword = () => {
                 authorization: `Bearer ${token}`,
             },
         })
-        console.log(data)
     }
 
     return (

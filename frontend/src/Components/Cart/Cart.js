@@ -30,16 +30,18 @@ const updateCartUrl = (hostname) => {
 
 const Cart = () => {
     const token = localStorage.getItem('etoken')
-    console.log(token)
-    const { quantity, getCartItems, updateCart, deleteCart } = useCartStore(
-        (state) => ({
-            quantity: state.quantity,
-            getCartItems: state.getCartItems,
-            updateCart: state.updateCart,
-            deleteCart: state.deleteCart,
-        }),
-        shallow
-    )
+
+    const { quantity, getCartItems, updateCart, deleteCart, cart } =
+        useCartStore(
+            (state) => ({
+                quantity: state.quantity,
+                getCartItems: state.getCartItems,
+                updateCart: state.updateCart,
+                deleteCart: state.deleteCart,
+                cart: state.cart,
+            }),
+            shallow
+        )
 
     const userid = localStorage.getItem('euserid')
     const { hostname } = window.location
@@ -151,7 +153,7 @@ const Cart = () => {
                                     )
                                 })}
 
-                            {quantity > 0 ? (
+                            {cart.length > 0 ? (
                                 <div className={styles.button}>
                                     <PaymentButton text="Pay Now" />
                                 </div>

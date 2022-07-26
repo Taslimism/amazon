@@ -42,7 +42,7 @@ const useCartStore = create((set) => ({
         try {
             const { data } = await axios.delete(url)
             set((state) => ({ quantity: state.quantity - 1 }))
-            console.log(data)
+
             return data
         } catch (err) {
             throw new Error(err)

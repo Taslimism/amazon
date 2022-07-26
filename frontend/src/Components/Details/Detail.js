@@ -66,7 +66,7 @@ const Detail = () => {
         const url = addToCartUrl(hostname)
         const userid = localStorage.getItem('euserid')
         const quant = quantity.current.value
-        console.log(quantity.current.textContent)
+
         const productid = data._id
         addToCart(url, {
             user_id: userid,

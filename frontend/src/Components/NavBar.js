@@ -12,7 +12,7 @@ const NavBar = () => {
         quantity: state.quantity,
         cart: state.cart,
     }))
-    console.log(cart[0])
+
     const token = localStorage.getItem('etoken')
     const [visibility, setVisibility] = useState(false)
 

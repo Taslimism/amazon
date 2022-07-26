@@ -49,7 +49,6 @@ const Form = () => {
             try {
                 const { data } = await axios.post(registerurl, userData)
                 if (data.status === 'success') {
-                    console.log(data)
                     localStorage.setItem('etoken', data.token)
                     localStorage.setItem('ename', userData.name)
                     localStorage.setItem('euserid', data.data.user._id)
@@ -78,7 +77,7 @@ const Form = () => {
                         `Successfully logged you in ${data.data.user.name}!`,
                         'success'
                     )
-                    console.log(data)
+
                     navigate(-1)
                 }
             } catch (e) {

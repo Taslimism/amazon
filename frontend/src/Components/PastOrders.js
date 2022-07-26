@@ -18,17 +18,18 @@ const getPastOrders = async ({ queryKey }) => {
 
     const items = orders.map((order) => [...order.items])
     const createdAT = orders.map((order) => order.createdAt)
-    const cost = orders.reduce((acc, curr) => acc.amount + curr.amount)
-    console.log(createdAT)
-    const order = []
 
+    let cost = 0
+    orders.forEach((order) => (cost += order.amount))
+
+    const order = []
     for (let i = 0; i < items.length; i++) {
         items[i].forEach((item) => {
             item.createdAt = createdAT[i]
             order.push(item)
         })
     }
-    console.log(order)
+
     return { order, cost }
 }
 
@@ -41,6 +42,7 @@ const PastOrders = () => {
 
     if (isSuccess) {
         const { cost, order } = data
+
         return (
             <div>
                 <h5 className={styles.heading}>Past Orders</h5>

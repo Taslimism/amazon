@@ -20,7 +20,7 @@ const Review = ({ id, hostname }) => {
         ['review', { hostname, id }],
         getReview
     )
-    console.log(data)
+
     if (isLoading) {
         return <Skeleton radius="xl" />
     }
